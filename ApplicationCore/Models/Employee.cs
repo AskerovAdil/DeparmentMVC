@@ -4,13 +4,6 @@ namespace ApplicationCore.Models
 {
     public class Employee
     {
-        public Employee(string firstName, string surName, DateTime dateOfBirth, string postition) { 
-        
-            FirstName = firstName;
-            SurName= surName;
-            DateOfBirth = dateOfBirth;
-            Position = postition;
-        }
 
 
         [Key]

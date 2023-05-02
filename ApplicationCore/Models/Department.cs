@@ -4,9 +4,6 @@ namespace ApplicationCore.Models
 {
     public class Department
     {
-        public Department(string name) { 
-            Name=name;
-        }
 
         [Key]
         public int ID { get; set; }
