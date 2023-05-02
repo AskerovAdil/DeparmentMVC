@@ -1,4 +1,6 @@
 using ApplicationCore.Data;
+using Management.Data.Abstract;
+using Management.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -16,6 +18,7 @@ namespace ApplicationCore
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddTransient<IDepartmentServices,DepartmentServices>();
 
             var app = builder.Build();
 
