@@ -1,66 +1,85 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ApplicationCore.Models;
+using Management.Data.Abstract;
+using Management.Data.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Management.Core.Controllers
 {
     public class EmployeesController : Controller
     {
-        // GET: EmployeesController
-        public ActionResult Index()
+        private readonly IEmployeesServices _employeesServices;
+        public EmployeesController(IEmployeesServices employeesServices)
         {
-            return View();
+            _employeesServices = employeesServices;
+        }
+
+        // GET: EmployeesController
+        [HttpGet("Employees/Index/{DepartmentID}")]
+        public ActionResult Index(Guid DepartmentID)
+        {
+			ViewData["DepID"] = DepartmentID;
+
+			var result = _employeesServices.GetAll().Where(x => x.DepartmentID == DepartmentID);
+            Console.WriteLine(result);
+            return View(result);
         }
 
         // GET: EmployeesController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(Decimal id)
         {
-            return View();
+            var result = _employeesServices.GetSingle(id);
+            if (result.Error)
+                return BadRequest(result.Message);
+            return View(result.Response);
         }
 
         // GET: EmployeesController/Create
-        public ActionResult Create()
+        [HttpGet("Employees/Create/{DepID}")]
+        public ActionResult Create(Guid DepID)
         {
-            return View();
-        }
+
+			return View();
+		}
 
         // POST: EmployeesController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpPost("Employees/Create/{DepID}")]
+        public ActionResult Create(Guid DepID, Employee employee)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            employee.DepartmentID = DepID;
+			var result = _employeesServices.Add(employee);
+			if (result.Error)
+				return BadRequest(result.Message);
+
+			return RedirectToAction(nameof(Index));
+		}
 
         // GET: EmployeesController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+
+            var result = _employeesServices.GetSingle(id);
+            return View(result.Response);
         }
 
         // POST: EmployeesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Employee employee)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (!ModelState.IsValid)
+                return View(employee);
+            
+            var result = _employeesServices.Update(employee);
+            if (result.Error)
+                return BadRequest();
+            
+            return RedirectToAction("Index", new { DepartmentID = employee.DepartmentID });
+        
         }
 
         // GET: EmployeesController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Guid id)
         {
             return View();
         }
@@ -68,7 +87,7 @@ namespace Management.Core.Controllers
         // POST: EmployeesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Guid id, IFormCollection collection)
         {
             try
             {

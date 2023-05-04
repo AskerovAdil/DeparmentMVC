@@ -1,0 +1,45 @@
+﻿@using Management.Core.DTO
+@model DepartmentDTO
+
+
+
+<details class="hover:cursor-pointer transition-all ease-in gap-2 py-1 my-5 border-s-[2px] border-blue-500 bg-blue-50 px-4 py-3 text-blue-700">
+	<summary class="card-header">
+		<h2 class="flex justify-between">
+			<span class="btn btn-link">
+				(@Model.Departments.Where(x => x.ParentDepartmentID == Model.SelectDepartment.ID).Count())
+				@Model.SelectDepartment.Name
+			</span>
+
+			@Html.ActionLink("Простмотр списка сотрудников", "Index", "Employees", new { ID = Model.SelectDepartment.ID} )
+		</h2>
+	</summary>
+	<ul>
+	@foreach (var node in Model.Departments.Where(x => x.ParentDepartmentID == Model.SelectDepartment.ID))
+	{
+		@Html.Partial("./Partial/PartialDepartment", new DepartmentDTO(node, Model.Departments))
+	}
+
+	</ul>
+</details>
+
+
+
+@*@using ApplicationCore.Models
+@model Department
+
+<details class="card">
+	<summary class="card-header">
+		<h2 class="mb-0">
+		<span class="btn btn-link">@Department.Name</span>
+		</h2>
+	</summary>
+	<ul>
+	@foreach (var subDepartment in Model.Where(d => d.ParentDepartmentID == subDepartment.ID))
+	{
+		@Html.Partial("PartialDepartment", subDepartment)
+	}
+	</ul>
+	}
+</details>
+*@

@@ -6,9 +6,9 @@ namespace ApplicationCore.Models
     {
 
         [Key]
-        public int ID { get; set; }
+        public Guid ID { get; set; }
         
-        public int? ParentDepartmentID { get; set; }
+        public Guid? ParentDepartmentID { get; set; }
 
         [MaxLength(10)]
         public string? Code { get; set; }

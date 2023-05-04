@@ -23,9 +23,9 @@ namespace Management.Data.Services
 
         public IEnumerable<Department> GetAll()
         {
-            return _context.Departments.AsEnumerable();
+            return _context.Department.AsEnumerable();
         }
-        public ServiceResponse<Department> GetSingle(int id)
+        public ServiceResponse<Department> GetSingle(Guid id)
         {
             var result = _context.Set<Department>().SingleOrDefault(x => x.ID == id);
 
@@ -36,7 +36,7 @@ namespace Management.Data.Services
             return ServiceResponse<Department>.BadResponse("Внутренняя ошибка!");
         }
 
-        public ServiceResponse<Department> GetSingle(int id, params Expression<Func<Department, object>>[] includeProperties)
+        public ServiceResponse<Department> GetSingle(Guid id, params Expression<Func<Department, object>>[] includeProperties)
         {
             IQueryable<Department> query = _context.Set<Department>();
             try

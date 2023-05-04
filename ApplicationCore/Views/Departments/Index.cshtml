@@ -1,13 +1,15 @@
-﻿@model IEnumerable<Department>
-
+﻿@using Management.Core.DTO
+@using ApplicationCore.Models
+@model IEnumerable<Department>
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Privacy";
 }
-<h1>@ViewData["Title"]</h1>
-<ul>
-    @foreach (var p in Model)
-    {
-        <li>@p.Name</li>
-    }
-</ul>
-<p>Use this page to detail your site's privacy policy.</p>
+
+
+
+<div class="accordion">
+	@foreach (var department in Model.Where(x=>x.ParentDepartmentID == null))
+	{
+		@Html.Partial("./Partial/PartialDepartment", new DepartmentDTO(department, Model))
+	}
+</div>

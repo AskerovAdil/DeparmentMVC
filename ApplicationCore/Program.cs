@@ -1,6 +1,7 @@
-using ApplicationCore.Data;
+﻿using ApplicationCore.Data;
 using Management.Data.Abstract;
 using Management.Data.Services;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -13,14 +14,21 @@ namespace ApplicationCore
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews().AddMvcOptions(options =>
+            {
+                options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+                    _ => "Поле не может быть пустым.");
+
+            });
+
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddTransient<IDepartmentServices,DepartmentServices>();
+			builder.Services.AddTransient<IDepartmentServices, DepartmentServices>();
+			builder.Services.AddTransient<IEmployeesServices, EmployeesServices>();
 
-            var app = builder.Build();
+			var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -39,7 +47,7 @@ namespace ApplicationCore
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Departments}/{action=Index}/{id?}");
 
             app.Run();
         }

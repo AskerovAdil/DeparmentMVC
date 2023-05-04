@@ -7,8 +7,8 @@ namespace ApplicationCore.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Department> Departments { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Department> Department { get; set; }
+        public DbSet<Employee> Empoyee { get; set; }
         
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

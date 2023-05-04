@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Management.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230502085624_initial")]
-    partial class initial
+    [Migration("20230503112432_iniit")]
+    partial class iniit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,11 +26,9 @@ namespace Management.Data.Migrations
 
             modelBuilder.Entity("ApplicationCore.Models.Department", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Code")
                         .HasMaxLength(10)
@@ -41,12 +39,12 @@ namespace Management.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("ParentDepartmentID")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ParentDepartmentID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Department");
                 });
 
             modelBuilder.Entity("ApplicationCore.Models.Employee", b =>
@@ -60,8 +58,8 @@ namespace Management.Data.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DepartmentID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DepartmentID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DocNumber")
                         .HasMaxLength(6)
@@ -92,7 +90,7 @@ namespace Management.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Empoyee");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,7 +20,7 @@ namespace Management.Core.Controllers
         }
 
         // GET: DepartmentsController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(Guid id)
         {
             var result = _departmentServices.GetSingle(id);
 
@@ -55,7 +55,7 @@ namespace Management.Core.Controllers
         // POST: DepartmentsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Guid id, IFormCollection collection)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Management.Core.Controllers
         }
 
         // GET: DepartmentsController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Guid id)
         {
             var response = _departmentServices.DeleteWhere(x => x.ID == id);
             return View(response.Message);
@@ -77,7 +77,7 @@ namespace Management.Core.Controllers
         // POST: DepartmentsController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Guid id, IFormCollection collection)
         {
             try
             {

@@ -5,32 +5,31 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Management.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class iniit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Departments",
+                name: "Department",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ParentDepartmentID = table.Column<int>(type: "int", nullable: true),
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParentDepartmentID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Code = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Departments", x => x.ID);
+                    table.PrimaryKey("PK_Department", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employees",
+                name: "Empoyee",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DepartmentID = table.Column<int>(type: "int", nullable: false),
+                    DepartmentID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SurName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Patronymic = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -41,17 +40,17 @@ namespace Management.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.ID);
+                    table.PrimaryKey("PK_Empoyee", x => x.ID);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Departments");
+                name: "Department");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "Empoyee");
         }
     }
 }
