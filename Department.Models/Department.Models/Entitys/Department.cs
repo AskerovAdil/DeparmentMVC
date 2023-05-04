@@ -10,11 +10,11 @@ namespace ApplicationCore.Models
         
         public Guid? ParentDepartmentID { get; set; }
 
-        [MaxLength(10)]
+        [MaxLength(10, ErrorMessage = "Поле не может быть больше 10 символов")]
         public string? Code { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        [Required(ErrorMessage = "Обязательное поле")]
+        [MaxLength(50, ErrorMessage = "Поле не может быть больше 50 символов")]
         public string Name { get; set; }
 
     }

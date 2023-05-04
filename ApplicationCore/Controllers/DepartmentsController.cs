@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Models;
 using Management.Data.Abstract;
+using Management.Data.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,48 +24,58 @@ namespace Management.Core.Controllers
         public ActionResult Details(Guid id)
         {
             var result = _departmentServices.GetSingle(id);
+            if (result.Error)
+                return BadRequest();
 
             return View(result);
         }
 
         // GET: DepartmentsController/Create
+        [HttpGet("Departments/Create")]
         public ActionResult Create()
         {
             return View();
         }
 
         // POST: DepartmentsController/Create
-        [HttpPost]
+        [HttpPost("Departments/Create")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Department department)
+        public ActionResult Create(Guid ParentDepId, Department department)
         {
-                var response = _departmentServices.Add(department);
-                if (response.Error)
-                    return RedirectToAction(nameof(Index));
-                else
-                    return View();
-            
-        }
+            if (!ModelState.IsValid)
+                return View(department);    
 
-        // GET: DepartmentsController/Edit/5
-        public ActionResult Edit(int id)
+            department.ParentDepartmentID = ParentDepId;
+            var response = _departmentServices.Add(department);
+            if (response.Error)
+                return BadRequest();
+            else
+                return RedirectToAction(nameof(Index));
+        }
+            
+        [HttpGet("Departments/Edit")]
+        public ActionResult Edit(Guid id)
         {
+            var result = _departmentServices.GetSingle(id);
+            if(!result.Error)
+                return View(result.Response);
+
             return View();
         }
 
         // POST: DepartmentsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid id, IFormCollection collection)
+        public ActionResult Edit(Department department)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (!ModelState.IsValid)
+                return View(department);
+
+            var result = _departmentServices.Update(department);
+            if (result.Error)
+                return BadRequest();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: DepartmentsController/Delete/5

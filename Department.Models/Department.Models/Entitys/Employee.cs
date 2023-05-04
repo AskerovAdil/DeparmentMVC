@@ -1,10 +1,12 @@
 ﻿    using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ApplicationCore.Models
 {
     public class Employee
     {
         [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public Decimal ID { get; set; }
 
         public Guid DepartmentID { get; set; }

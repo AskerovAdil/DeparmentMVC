@@ -17,6 +17,7 @@ namespace Management.Data.Abstract
         public void Commit();
         public ServiceResponse<Department> Add(Department entity, params Expression<Func<Department, object>>[] includes);
         public ServiceResponse DeleteWhere(Expression<Func<Department, bool>> predicate);
+        public ServiceResponse<Department> Update(Department entity);
 
     }
 }

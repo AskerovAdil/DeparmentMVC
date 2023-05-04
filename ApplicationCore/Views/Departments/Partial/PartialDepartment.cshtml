@@ -11,7 +11,32 @@
 				@Model.SelectDepartment.Name
 			</span>
 
-			@Html.ActionLink("Простмотр списка сотрудников", "Index", "Employees", new { ID = Model.SelectDepartment.ID} )
+
+            <span class="inline-flex overflow-hidden rounded-md border bg-white shadow-sm">
+
+
+                <a asp-controller="Departments" asp-action="Create"
+                   asp-route-ParentDepId="@Model.SelectDepartment.ID"
+                   class="inline-block border-e p-3 text-gray-700 hover:bg-gray-50 focus:relative"
+                   title="Edit Product">
+                    Добавить отдел
+                </a>
+				<a asp-controller="Departments"
+                   asp-action="Edit"
+                   asp-route-id="@Model.SelectDepartment.ID"
+                   class="inline-block p-3 text-gray-700 hover:bg-gray-50 focus:relative"
+                   title="Delete Product">
+                    Редактировать
+                </a>
+                <a asp-controller="Employees"
+                   asp-action="Index"
+                   asp-route-id="@Model.SelectDepartment.ID"
+                   class="inline-block p-3 text-gray-700 hover:bg-gray-50 focus:relative"
+                   title="Delete Product">
+                    Сотрудники
+                </a>
+            </span>
+
 		</h2>
 	</summary>
 	<ul>

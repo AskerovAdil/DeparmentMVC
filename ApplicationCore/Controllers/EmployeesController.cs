@@ -1,7 +1,5 @@
 ﻿using ApplicationCore.Models;
 using Management.Data.Abstract;
-using Management.Data.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Management.Core.Controllers
@@ -14,7 +12,6 @@ namespace Management.Core.Controllers
             _employeesServices = employeesServices;
         }
 
-        // GET: EmployeesController
         [HttpGet("Employees/Index/{DepartmentID}")]
         public ActionResult Index(Guid DepartmentID)
         {
@@ -25,7 +22,6 @@ namespace Management.Core.Controllers
             return View(result);
         }
 
-        // GET: EmployeesController/Details/5
         public ActionResult Details(Decimal id)
         {
             var result = _employeesServices.GetSingle(id);
@@ -34,15 +30,12 @@ namespace Management.Core.Controllers
             return View(result.Response);
         }
 
-        // GET: EmployeesController/Create
         [HttpGet("Employees/Create/{DepID}")]
         public ActionResult Create(Guid DepID)
         {
-
 			return View();
 		}
 
-        // POST: EmployeesController/Create
         [HttpPost("Employees/Create/{DepID}")]
         public ActionResult Create(Guid DepID, Employee employee)
         {
@@ -51,18 +44,15 @@ namespace Management.Core.Controllers
 			if (result.Error)
 				return BadRequest(result.Message);
 
-			return RedirectToAction(nameof(Index));
-		}
+            return RedirectToAction("Index", new { DepartmentID = employee.DepartmentID });
+        }
 
-        // GET: EmployeesController/Edit/5
         public ActionResult Edit(int id)
         {
-
             var result = _employeesServices.GetSingle(id);
             return View(result.Response);
         }
 
-        // POST: EmployeesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Employee employee)
@@ -78,25 +68,23 @@ namespace Management.Core.Controllers
         
         }
 
-        // GET: EmployeesController/Delete/5
-        public ActionResult Delete(Guid id)
+        [HttpGet]
+        public ActionResult Delete(int id)
         {
-            return View();
+            var result = _employeesServices.GetSingle(id);
+            if(result.Error) return BadRequest();
+            return View(result.Response);
         }
 
-        // POST: EmployeesController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Guid id, IFormCollection collection)
+        public ActionResult Delete(Employee deleteEmployee)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var result = _employeesServices.DeleteWhere(x=>x.ID == deleteEmployee.ID);
+            if (result.Error)
+                return BadRequest();
+
+            return RedirectToAction("Index", new { DepartmentID = deleteEmployee.DepartmentID });
         }
     }
 }

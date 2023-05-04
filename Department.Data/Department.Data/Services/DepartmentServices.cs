@@ -136,11 +136,6 @@ namespace Management.Data.Services
                 EntityEntry dbEntityEntry = _context.Update(entity);
                 dbEntityEntry.State = EntityState.Modified;
 
-                /*EntityEntry dbEntityEntry = _context.Entry<T>(entity);
-                dbEntityEntry.State = EntityState.Modified;*/
-
-
-
                 Commit();
                 return ServiceResponse<Department>.OkResponse(entity);
             }
